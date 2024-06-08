@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  prestashop:
+    image: prestashop/prestashop:latest
+    ports:
+      - "8080:80"
+    environment:
+      - PS_INSTALL_AUTO=${PS_INSTALL_AUTO}
+      - PS_ERASE_DB=${PS_ERASE_DB}
+      - PS_DEV_MODE=${PS_DEV_MODE}
+      - PS_HOST_MODE=${PS_HOST_MODE}
+      - DB_SERVER=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PASSWD=${ADMIN_PASSWD}
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+      - PS_TIMEZONE=${PS_TIMEZONE}
+      - PS_DOMAIN=${PS_DOMAIN}
+    volumes:
+      - prestashop-data:/var/www/html
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  prestashop-data:
+  db-data:
